@@ -1,5 +1,9 @@
 // Firebase Configuration for SARSAR Platform
-// This file initializes Firebase with environment variables
+// Initializes Firebase and exports auth & db
+
+import { initializeApp } from 'firebase/app'
+import { getAuth } from 'firebase/auth'
+import { getFirestore } from 'firebase/firestore'
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -11,22 +15,28 @@ const firebaseConfig = {
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 }
 
-// Validate Firebase configuration
+// Validate Firebase configuration (dev only)
 const validateConfig = () => {
   const required = ['apiKey', 'authDomain', 'projectId', 'storageBucket', 'appId']
-  const missing = required.filter(key => !firebaseConfig[key])
-  
+  const missing = required.filter((key) => !firebaseConfig[key])
+
   if (missing.length > 0) {
-    console.error(`Missing Firebase config: ${missing.join(', ')}`)
-    console.error('Please check your .env.local file')
+    console.warn(`⚠️ Missing Firebase config: ${missing.join(', ')}`)
+    console.warn('⚠️ Check your .env or Netlify environment variables')
     return false
   }
   return true
 }
 
-// Only validate in development
 if (import.meta.env.DEV) {
   validateConfig()
 }
-export const db = getFirestore(app);
-export default firebaseConfig
+
+// 🔥 Initialize Firebase
+const app = initializeApp(firebaseConfig)
+
+// 🔐 Firebase services
+export const auth = getAuth(app)
+export const db = getFirestore(app)
+
+export default app
