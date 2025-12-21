@@ -1,38 +1,25 @@
-// Firebase initialization and exports
-import { initializeApp } from 'firebase/app'
-import { getAuth, connectAuthEmulator } from 'firebase/auth'
-import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore'
-import { getStorage, connectStorageEmulator } from 'firebase/storage'
-import { getAnalytics } from 'firebase/analytics'
-import firebaseConfig from '@/config/firebase'
+// FILE PATH: src/lib/firebase.js
+// Firebase Initialization and Service Exports
 
-// Initialize Firebase
-let app
-try {
-  app = initializeApp(firebaseConfig)
-  console.log('✅ Firebase initialized successfully')
-} catch (error) {
-  console.error('❌ Firebase initialization error:', error)
-  throw error
-}
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
+import { getAnalytics } from 'firebase/analytics';
+import { firebaseConfig } from '@/config/firebase';
 
-// Initialize Firebase services
-export const auth = getAuth(app)
-export const db = getFirestore(app)
-export const storage = getStorage(app)
+// Initialize Firebase App
+export const app = initializeApp(firebaseConfig);
 
-// Initialize Analytics only in production
-export const analytics = import.meta.env.PROD && firebaseConfig.measurementId ?
+// Initialize Firebase Services
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+export const storage = getStorage(app);
+
+// Initialize Analytics (only in production and browser environment)
+export const analytics = typeof window !== 'undefined' && import.meta.env.PROD ?
   getAnalytics(app) :
-  null
+  null;
 
-// Connect to emulators in development (optional)
-if (import.meta.env.DEV && import.meta.env.VITE_USE_FIREBASE_EMULATOR === 'true') {
-  connectAuthEmulator(auth, 'http://localhost:9099')
-  connectFirestoreEmulator(db, 'localhost', 8080)
-  connectStorageEmulator(storage, 'localhost', 9199)
-  console.log('🔧 Connected to Firebase Emulators')
-}
-
-// Export initialized app
-export default app
+// Export initialized app as default
+export default app;
