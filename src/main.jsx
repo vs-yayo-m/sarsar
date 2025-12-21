@@ -142,16 +142,7 @@ if (import.meta.env.DEV) {
   console.log('Debug info available at: window.__SARSAR_DEBUG__');
 }
 
-// ==================== ACCESSIBILITY ====================
-// Warn about accessibility issues in development
-if (import.meta.env.DEV) {
-  import('@axe-core/react').then((axe) => {
-    axe.default(React, ReactDOM, 1000);
-    console.log('✅ Accessibility auditing enabled (axe-core)');
-  }).catch(() => {
-    // Silently fail if axe-core is not installed
-  });
-}
+ 
 
 // ==================== ANALYTICS TRACKING ====================
 // Track page views (uncomment when analytics is set up)

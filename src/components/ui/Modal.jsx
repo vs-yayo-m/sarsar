@@ -213,11 +213,4 @@ export const ConfirmDialog = ({
 }
 
 export default Modal
-export {
-  ModalHeader,
-  ModalTitle,
-  ModalDescription,
-  ModalBody,
-  ModalFooter,
-  ConfirmDialog,
-}
+ 

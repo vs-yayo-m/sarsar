@@ -115,4 +115,3 @@ export const CardFooter = ({ children, className = '', ...props }) => {
 
 // Export all components
 export default Card
-export { CardHeader, CardTitle, CardDescription, CardContent, CardFooter }

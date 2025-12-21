@@ -191,4 +191,3 @@ export const Textarea = forwardRef(({
 Textarea.displayName = 'Textarea'
 
 export default Input
-export { Textarea }

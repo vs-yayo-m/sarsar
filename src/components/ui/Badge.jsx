@@ -197,5 +197,4 @@ export const DiscountBadge = ({
   )
 }
 
-export default Badge
-export { NotificationBadge, StatusBadge, DiscountBadge }
+export default Badge 
