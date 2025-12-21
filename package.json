@@ -1,0 +1,43 @@
+{
+  "name": "sarsar-platform",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "SARSAR - Premium Quick Commerce Platform for Butwal, Nepal",
+  "author": "Vishal Sharma",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.22.3",
+    "firebase": "^10.8.1",
+    "framer-motion": "^11.0.8",
+    "lucide-react": "^0.263.1",
+    "date-fns": "^3.3.1",
+    "react-hook-form": "^7.51.0",
+    "zustand": "^4.5.2",
+    "@tanstack/react-query": "^5.25.0",
+    "recharts": "^2.12.2",
+    "react-toastify": "^10.0.5",
+    "zod": "^3.22.4",
+    "react-hot-toast": "^2.4.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.66",
+    "@types/react-dom": "^18.2.22",
+    "@vitejs/plugin-react": "^4.2.1",
+    "vite": "^5.2.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react": "^7.34.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.5",
+    "autoprefixer": "^10.4.18",
+    "postcss": "^8.4.35",
+    "tailwindcss": "^3.4.1"
+  }
+}

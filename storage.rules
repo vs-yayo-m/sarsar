@@ -1,0 +1,98 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    function isAdmin() {
+      return isAuthenticated() && 
+             firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    function isSupplier() {
+      return isAuthenticated() && 
+             firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.role == 'supplier';
+    }
+    
+    function isValidImage() {
+      return request.resource.size < 5 * 1024 * 1024 && // Max 5MB
+             request.resource.contentType.matches('image/.*');
+    }
+    
+    function isValidDocument() {
+      return request.resource.size < 10 * 1024 * 1024 && // Max 10MB
+             (request.resource.contentType.matches('application/pdf') ||
+              request.resource.contentType.matches('application/msword') ||
+              request.resource.contentType.matches('application/vnd.openxmlformats-officedocument.*'));
+    }
+    
+    // Product images (suppliers can upload, anyone can read)
+    match /products/{productId}/{fileName} {
+      allow read: if true; // Public read
+      allow write: if (isSupplier() || isAdmin()) && isValidImage();
+      allow delete: if isSupplier() || isAdmin();
+    }
+    
+    // User profile pictures
+    match /users/{userId}/profile/{fileName} {
+      allow read: if true; // Public read
+      allow write: if isOwner(userId) && isValidImage();
+      allow delete: if isOwner(userId) || isAdmin();
+    }
+    
+    // Review images (customers who ordered)
+    match /reviews/{reviewId}/{fileName} {
+      allow read: if true; // Public read
+      allow write: if isAuthenticated() && isValidImage();
+      allow delete: if isAuthenticated() || isAdmin();
+    }
+    
+    // Business documents (suppliers only)
+    match /suppliers/{supplierId}/documents/{fileName} {
+      allow read: if isOwner(supplierId) || isAdmin();
+      allow write: if isOwner(supplierId) && isValidDocument();
+      allow delete: if isOwner(supplierId) || isAdmin();
+    }
+    
+    // Order receipts/invoices
+    match /orders/{orderId}/{fileName} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+      allow delete: if isAdmin();
+    }
+    
+    // Category images (admin only)
+    match /categories/{categoryId}/{fileName} {
+      allow read: if true; // Public read
+      allow write: if isAdmin() && isValidImage();
+      allow delete: if isAdmin();
+    }
+    
+    // Banners and promotional images (admin only)
+    match /banners/{bannerId}/{fileName} {
+      allow read: if true; // Public read
+      allow write: if isAdmin() && isValidImage();
+      allow delete: if isAdmin();
+    }
+    
+    // Temporary uploads (authenticated users, auto-delete after 24h)
+    match /temp/{userId}/{fileName} {
+      allow read: if isOwner(userId);
+      allow write: if isOwner(userId) && isValidImage();
+      allow delete: if isOwner(userId) || isAdmin();
+    }
+    
+    // Deny all other access
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
