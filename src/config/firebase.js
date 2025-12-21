@@ -28,5 +28,5 @@ const validateConfig = () => {
 if (import.meta.env.DEV) {
   validateConfig()
 }
-
+export const db = getFirestore(app);
 export default firebaseConfig
