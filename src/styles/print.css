@@ -1,0 +1,72 @@
+// ============================================================
+// FILE PATH: src/styles/print.css
+// ============================================================
+/* Print-specific styles */
+@media print {
+  /* Hide navigation, footer, and non-essential elements */
+  header,
+  footer,
+  nav,
+  .no-print {
+    display: none !important;
+  }
+
+  /* Optimize for printing */
+  body {
+    font-size: 12pt;
+    line-height: 1.5;
+    color: #000;
+    background: #fff;
+  }
+
+  /* Page breaks */
+  .page-break {
+    page-break-after: always;
+  }
+
+  .avoid-break {
+    page-break-inside: avoid;
+  }
+
+  /* Invoice styles */
+  .invoice {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* Order receipt */
+  .receipt {
+    width: 80mm;
+    font-size: 10pt;
+  }
+
+  /* Packing slip */
+  .packing-slip {
+    font-size: 11pt;
+  }
+
+  /* Links */
+  a[href]:after {
+    content: none;
+  }
+
+  /* Images */
+  img {
+    max-width: 100%;
+    page-break-inside: avoid;
+  }
+
+  /* Tables */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  th,
+  td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+}
+
