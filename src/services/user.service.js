@@ -17,7 +17,7 @@ import {
   startAfter,
   Timestamp
 } from 'firebase/firestore';
-import { db } from '@/config/firebase';
+import { db } from '@/lib/firebase';
 
 /**
  * User Service

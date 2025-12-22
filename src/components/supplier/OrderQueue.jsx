@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { collection, query, where, onSnapshot, orderBy, updateDoc, doc } from 'firebase/firestore';
-import { db } from '@/config/firebase';
+import { db } from '@/lib/firebase';
 import OrderCard from './OrderCard';
 import PickingList from './PickingList';
 import PackingInterface from './PackingInterface';

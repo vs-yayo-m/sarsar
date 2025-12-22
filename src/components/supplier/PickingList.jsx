@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle, Circle, Package, Clock, MapPin, AlertCircle, ChevronRight } from 'lucide-react';
 import { updateDoc, doc } from 'firebase/firestore';
-import { db } from '@/config/firebase';
+import { db } from '@/lib/firebase';
 import Button from '@/components/ui/Button';
 import { formatPrice } from '@/utils/formatters';
 import toast from 'react-hot-toast';

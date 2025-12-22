@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { collection, query, where, onSnapshot, updateDoc, doc } from 'firebase/firestore';
-import { db } from '@/config/firebase';
+import { db } from '@/lib/firebase';
 import Button from '@/components/ui/Button';
 import Modal from '@/components/ui/Modal';
 import StockAdjustment from './StockAdjustment';

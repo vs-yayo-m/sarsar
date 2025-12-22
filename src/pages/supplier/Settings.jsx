@@ -17,7 +17,7 @@ import {
   MapPin
 } from 'lucide-react';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
-import { db } from '@/config/firebase';
+import { db } from '@/lib/firebase';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import LoadingScreen from '@/components/shared/LoadingScreen';

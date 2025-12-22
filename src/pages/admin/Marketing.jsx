@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 import MarketingTools from '@/components/admin/MarketingTools';
 import { collection, getDocs, query, where } from 'firebase/firestore';
-import { db } from '@/config/firebase';
+import { db } from '@/lib/firebase';
 
 const Marketing = () => {
   const [activeTab, setActiveTab] = useState('overview');

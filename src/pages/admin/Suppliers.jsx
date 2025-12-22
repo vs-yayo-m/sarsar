@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import SupplierDirectory from '@/components/admin/SupplierDirectory';
 import { collection, query, where, getDocs } from 'firebase/firestore';
-import { db } from '@/config/firebase';
+import { db } from '@/lib/firebase';
 
 const Suppliers = () => {
   const [suppliers, setSuppliers] = useState([]);

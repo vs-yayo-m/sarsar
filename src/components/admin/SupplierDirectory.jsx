@@ -20,7 +20,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { doc, updateDoc } from 'firebase/firestore';
-import { db } from '@/config/firebase';
+import { db } from '@/lib/firebase';
 
 const SupplierDirectory = ({ suppliers, loading }) => {
   const [selectedSuppliers, setSelectedSuppliers] = useState([]);

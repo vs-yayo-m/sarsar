@@ -3,7 +3,7 @@
 // ============================================================
 import { useState, useEffect } from 'react';
 import { collection, query, getDocs, where } from 'firebase/firestore';
-import { db } from '@/config/firebase';
+import { db } from '@/lib/firebase';
 
 export const useUsers = (role = null) => {
   const [users, setUsers] = useState([]);

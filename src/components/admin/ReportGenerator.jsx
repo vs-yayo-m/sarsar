@@ -17,7 +17,7 @@ import {
   CheckCircle
 } from 'lucide-react';
 import { collection, query, where, getDocs } from 'firebase/firestore';
-import { db } from '@/config/firebase';
+import { db } from '@/lib/firebase';
 
 const ReportGenerator = () => {
   const [reportType, setReportType] = useState('sales');
