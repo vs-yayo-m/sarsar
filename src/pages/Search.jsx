@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Search as SearchIcon } from 'lucide-react';
 import ProductCard from '@/components/customer/ProductCard';
-import  useProducts  from '@/hooks/useProducts';
+import useProducts from '@/hooks/useProducts';
 
 const Search = () => {
   const [searchParams] = useSearchParams();
