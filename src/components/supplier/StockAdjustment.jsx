@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Plus, Minus, RotateCcw, Package } from 'lucide-react';
 import { updateDoc, doc, addDoc, collection, serverTimestamp } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
+import { db } from '@/config/firebase';
 import Button from '@/components/ui/Button';
 import { formatPrice } from '@/utils/formatters';
 import toast from 'react-hot-toast';

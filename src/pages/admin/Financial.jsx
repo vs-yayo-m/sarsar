@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import FinancialDashboard from '@/components/admin/FinancialDashboard';
 import { collection, getDocs, query, where } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
+import { db } from '@/config/firebase';
 
 const Financial = () => {
   const [loading, setLoading] = useState(true);

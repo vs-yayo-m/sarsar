@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import AnalyticsPanel from '@/components/admin/AnalyticsPanel';
 import { collection, getDocs, query, where } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
+import { db } from '@/config/firebase';
 
 const Analytics = () => {
   const [loading, setLoading] = useState(true);

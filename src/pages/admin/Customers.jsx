@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import UserManagement from '@/components/admin/UserManagement';
 import { collection, query, where, getDocs } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
+import { db } from '@/config/firebase';
 
 const Customers = () => {
   const [customers, setCustomers] = useState([]);

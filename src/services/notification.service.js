@@ -2,7 +2,7 @@
 // FILE PATH: src/services/notification.service.js
 // ============================================================
 import { collection, addDoc, query, where, getDocs, updateDoc, doc } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
+import { db } from '@/config/firebase';
 
 export const notificationService = {
   // Send notification

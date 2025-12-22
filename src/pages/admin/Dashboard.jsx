@@ -18,7 +18,7 @@ import LiveOrderFeed from '@/components/admin/LiveOrderFeed';
 import RevenueChart from '@/components/admin/RevenueChart';
 import { useAuth } from '@/hooks/useAuth';
 import { collection, query, where, getDocs, onSnapshot } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
+import { db } from '@/config/firebase';
 
 const Dashboard = () => {
   const { user } = useAuth();

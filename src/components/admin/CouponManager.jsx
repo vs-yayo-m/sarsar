@@ -17,7 +17,7 @@ import {
   DollarSign
 } from 'lucide-react';
 import { doc, addDoc, updateDoc, deleteDoc, collection, Timestamp } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
+import { db } from '@/config/firebase';
 
 const CouponManager = ({ coupons = [], onRefresh }) => {
   const [showCreateModal, setShowCreateModal] = useState(false);

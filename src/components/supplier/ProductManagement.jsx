@@ -19,7 +19,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { collection, query, where, onSnapshot, deleteDoc, doc, updateDoc } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
+import { db } from '@/config/firebase';
 import Button from '@/components/ui/Button';
 import Modal from '@/components/ui/Modal';
 import ProductForm from './ProductForm';

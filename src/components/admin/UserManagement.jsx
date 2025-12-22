@@ -19,7 +19,7 @@ import {
 import { formatDistanceToNow } from 'date-fns';
 import { Link } from 'react-router-dom';
 import { doc, updateDoc } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
+import { db } from '@/config/firebase';
 
 const UserManagement = ({ users, loading, userType = 'customer' }) => {
   const [sortBy, setSortBy] = useState('joinDate');

@@ -23,7 +23,7 @@ import {
   RefreshCw
 } from 'lucide-react';
 import { collection, query, where, getDocs } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
+import { db } from '@/config/firebase';
 
 const RevenueChart = () => {
   const [chartData, setChartData] = useState([]);

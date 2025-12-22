@@ -2,7 +2,7 @@
 // FILE PATH: src/services/upload.service.js
 // ============================================================
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
-import { storage } from '@/lib/firebase';
+import { storage } from '@/config/firebase';
 
 export const uploadService = {
   // Upload image

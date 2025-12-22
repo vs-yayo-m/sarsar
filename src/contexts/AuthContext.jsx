@@ -12,7 +12,7 @@ import {
   reauthenticateWithCredential,
 } from 'firebase/auth';
 import { doc, setDoc, getDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
-import { auth, db } from '@/lib/firebase';
+import { auth, db } from '@/config/firebase';
 
 const AuthContext = createContext(null);
 
