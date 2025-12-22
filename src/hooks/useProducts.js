@@ -45,4 +45,3 @@ export default function useProducts() {
     fetchFeatured, // ✅ DEFINED & RETURNED
   };
 }
-export useProducts ;
