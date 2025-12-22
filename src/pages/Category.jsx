@@ -2,7 +2,7 @@
 // FILE PATH: src/pages/Category.jsx
 // ============================================================
 import { useParams } from 'react-router-dom';
-import { useProducts } from '@/hooks/useProducts';
+import useProducts from '@/hooks/useProducts';
 import ProductCard from '@/components/customer/ProductCard';
 import FilterSidebar from '@/components/customer/FilterSidebar';
 
