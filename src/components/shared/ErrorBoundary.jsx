@@ -1,5 +1,5 @@
 // FILE PATH: src/components/shared/ErrorBoundary.jsx
-// Error Boundary Component - Catches and handles React errors gracefully
+// Error Boundary Component - Shows actual error details
 
 import React, { Component } from 'react';
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
@@ -16,7 +16,6 @@ class ErrorBoundary extends Component {
     };
   }
   
-  // Update state when an error occurs
   static getDerivedStateFromError(error) {
     return {
       hasError: true,
@@ -24,39 +23,18 @@ class ErrorBoundary extends Component {
     };
   }
   
-  // Log error details
   componentDidCatch(error, errorInfo) {
-    // Update state with error details
     this.setState((prevState) => ({
       errorInfo,
       errorCount: prevState.errorCount + 1,
     }));
     
-    // Log to console in development
-    if (import.meta.env.DEV) {
-      console.error('❌ Error Boundary caught an error:', error);
-      console.error('Error Info:', errorInfo);
-    }
-    
-    // Log to error tracking service (Sentry, etc.)
-    if (import.meta.env.PROD) {
-      // Example: Sentry.captureException(error, { extra: errorInfo });
-      console.error('Error occurred:', error.message);
-    }
-    
-    // Log to analytics
-    try {
-      // Example: Analytics tracking
-      // logEvent(analytics, 'exception', {
-      //   description: error.message,
-      //   fatal: true,
-      // });
-    } catch (analyticsError) {
-      console.error('Failed to log error to analytics:', analyticsError);
-    }
+    // Log error details
+    console.error('❌ Error Boundary caught an error:', error);
+    console.error('Error Info:', errorInfo);
+    console.error('Error Stack:', error.stack);
   }
   
-  // Reset error boundary
   handleReset = () => {
     this.setState({
       hasError: false,
@@ -65,12 +43,10 @@ class ErrorBoundary extends Component {
     });
   };
   
-  // Reload page
   handleReload = () => {
     window.location.reload();
   };
   
-  // Go to home page
   handleGoHome = () => {
     window.location.href = '/';
   };
@@ -79,12 +55,11 @@ class ErrorBoundary extends Component {
     const { hasError, error, errorInfo, errorCount } = this.state;
     const { children } = this.props;
     
-    // If no error, render children normally
     if (!hasError) {
       return children;
     }
     
-    // If too many errors (potential infinite loop), show critical error
+    // Critical error (too many errors)
     if (errorCount > 5) {
       return (
         <div className="min-h-screen bg-gradient-to-br from-red-50 to-red-100 flex items-center justify-center p-4">
@@ -96,7 +71,7 @@ class ErrorBoundary extends Component {
               Critical Error
             </h1>
             <p className="text-gray-600 mb-6">
-              Multiple errors detected. Please reload the page or contact support.
+              Multiple errors detected. Please reload the page.
             </p>
             <button
               onClick={this.handleReload}
@@ -109,14 +84,14 @@ class ErrorBoundary extends Component {
       );
     }
     
-    // Render error UI
+    // Regular error display WITH DETAILS
     return (
       <div className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 flex items-center justify-center p-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="bg-white rounded-2xl shadow-2xl p-8 max-w-2xl w-full"
+          className="bg-white rounded-2xl shadow-2xl p-8 max-w-3xl w-full"
         >
           {/* Error Icon */}
           <div className="flex justify-center mb-6">
@@ -131,35 +106,44 @@ class ErrorBoundary extends Component {
               Oops! Something went wrong
             </h1>
             <p className="text-lg text-gray-600">
-              We encountered an unexpected error. Don't worry, we're on it!
+              We encountered an unexpected error.
             </p>
           </div>
 
-          {/* Error Details (Development Only) */}
-          {import.meta.env.DEV && error && (
-            <div className="mb-8 bg-gray-50 rounded-lg p-4 border border-gray-200">
-              <h3 className="text-sm font-semibold text-gray-700 mb-2">
-                Error Details (Development Only):
-              </h3>
-              <pre className="text-xs text-red-600 overflow-x-auto whitespace-pre-wrap break-words">
-                {error.toString()}
-              </pre>
-              {errorInfo && (
-                <details className="mt-4">
-                  <summary className="cursor-pointer text-sm font-semibold text-gray-700">
-                    Stack Trace
-                  </summary>
-                  <pre className="mt-2 text-xs text-gray-600 overflow-x-auto whitespace-pre-wrap break-words">
-                    {errorInfo.componentStack}
-                  </pre>
-                </details>
-              )}
-            </div>
-          )}
+          {/* SHOW ACTUAL ERROR - ALWAYS VISIBLE */}
+          <div className="mb-8 bg-red-50 rounded-lg p-4 border border-red-200">
+            <h3 className="text-sm font-semibold text-red-900 mb-2">
+              Error Details:
+            </h3>
+            <pre className="text-xs text-red-700 overflow-x-auto whitespace-pre-wrap break-words max-h-40 overflow-y-auto">
+              {error?.toString() || 'Unknown error'}
+            </pre>
+            
+            {error?.stack && (
+              <details className="mt-4">
+                <summary className="cursor-pointer text-sm font-semibold text-red-900">
+                  Stack Trace (click to expand)
+                </summary>
+                <pre className="mt-2 text-xs text-red-600 overflow-x-auto whitespace-pre-wrap break-words max-h-60 overflow-y-auto">
+                  {error.stack}
+                </pre>
+              </details>
+            )}
+
+            {errorInfo?.componentStack && (
+              <details className="mt-4">
+                <summary className="cursor-pointer text-sm font-semibold text-red-900">
+                  Component Stack (click to expand)
+                </summary>
+                <pre className="mt-2 text-xs text-red-600 overflow-x-auto whitespace-pre-wrap break-words max-h-60 overflow-y-auto">
+                  {errorInfo.componentStack}
+                </pre>
+              </details>
+            )}
+          </div>
 
           {/* Action Buttons */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {/* Try Again */}
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
@@ -170,7 +154,6 @@ class ErrorBoundary extends Component {
               Try Again
             </motion.button>
 
-            {/* Reload Page */}
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
@@ -181,7 +164,6 @@ class ErrorBoundary extends Component {
               Reload Page
             </motion.button>
 
-            {/* Go Home */}
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
@@ -196,23 +178,17 @@ class ErrorBoundary extends Component {
           {/* Help Text */}
           <div className="mt-8 text-center">
             <p className="text-sm text-gray-500">
-              If the problem persists, please{' '}
+              Error ID: {Date.now()} | SARSAR Platform v1.0
+            </p>
+            <p className="text-sm text-gray-500 mt-2">
+              Contact support:{' '}
               <a
-                href="/contact"
+                href="mailto:support@sarsar.com.np"
                 className="text-orange-600 hover:text-orange-700 font-semibold underline"
               >
-                contact our support team
+                support@sarsar.com.np
               </a>
-              .
             </p>
-          </div>
-
-          {/* Additional Info */}
-          <div className="mt-6 pt-6 border-t border-gray-200">
-            <div className="flex items-center justify-between text-xs text-gray-400">
-              <span>Error ID: {Date.now()}</span>
-              <span>SARSAR Platform v1.0</span>
-            </div>
           </div>
         </motion.div>
       </div>
