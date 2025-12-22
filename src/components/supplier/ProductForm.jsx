@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAuth } from '@/hooks/useAuth';
 import { collection, addDoc, updateDoc, doc, serverTimestamp } from 'firebase/firestore';
-import { db } from '@/config/firebase';
+import { db } from '@/lib/firebase';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import ImageUploader from '@/components/shared/ImageUploader';

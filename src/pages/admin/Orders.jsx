@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import OrderManagement from '@/components/admin/OrderManagement';
 import { collection, query, orderBy, getDocs, where } from 'firebase/firestore';
-import { db } from '@/config/firebase';
+import { db } from '@/lib/firebase';
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);

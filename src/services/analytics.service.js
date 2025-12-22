@@ -2,7 +2,7 @@
 // FILE PATH: src/services/analytics.service.js
 // ============================================================
 import { logEvent } from 'firebase/analytics';
-import { analytics } from '@/config/firebase';
+import { analytics } from '@/lib/firebase';
 
 export const analyticsService = {
   // Track page view

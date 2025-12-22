@@ -17,7 +17,7 @@ import {
   TrendingUp
 } from 'lucide-react';
 import { doc, addDoc, updateDoc, deleteDoc, collection, Timestamp } from 'firebase/firestore';
-import { db } from '@/config/firebase';
+import { db } from '@/lib/firebase';
 
 const CampaignManager = ({ campaigns = [], onRefresh }) => {
   const [showCreateModal, setShowCreateModal] = useState(false);

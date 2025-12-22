@@ -2,7 +2,7 @@
 // FILE PATH: src/lib/analytics.js
 // ============================================================
 import { getAnalytics, logEvent, setUserId, setUserProperties } from 'firebase/analytics';
-import { app } from '@/config/firebase';
+import { app } from '@/lib/firebase';
 
 let analytics = null;
 

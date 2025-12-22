@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 import { doc, addDoc, updateDoc, deleteDoc, collection, Timestamp } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { db, storage } from '@/config/firebase';
+import { db, storage } from '@/lib/firebase';
 
 const BannerManager = ({ banners = [], onRefresh }) => {
   const [showCreateModal, setShowCreateModal] = useState(false);

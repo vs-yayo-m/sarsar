@@ -17,7 +17,7 @@ import {
 import { formatDistanceToNow } from 'date-fns';
 import { Link } from 'react-router-dom';
 import { doc, updateDoc } from 'firebase/firestore';
-import { db } from '@/config/firebase';
+import { db } from '@/lib/firebase';
 
 const OrderManagement = ({ orders, loading, selectedOrders, setSelectedOrders }) => {
   const [sortBy, setSortBy] = useState('date');

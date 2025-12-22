@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 import ProductModeration from '@/components/admin/ProductModeration';
 import { collection, query, getDocs, where } from 'firebase/firestore';
-import { db } from '@/config/firebase';
+import { db } from '@/lib/firebase';
 
 const Products = () => {
   const [products, setProducts] = useState([]);

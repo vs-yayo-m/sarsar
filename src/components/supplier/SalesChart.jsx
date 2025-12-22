@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { Calendar, TrendingUp } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { collection, query, where, getDocs, orderBy } from 'firebase/firestore';
-import { db } from '@/config/firebase';
+import { db } from '@/lib/firebase';
 import { formatPrice } from '@/utils/formatters';
 import { startOfDay, endOfDay, subDays, format } from 'date-fns';
 

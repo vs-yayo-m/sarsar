@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 import SettingsPanel from '@/components/admin/SettingsPanel';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
-import { db } from '@/config/firebase';
+import { db } from '@/lib/firebase';
 
 const Settings = () => {
   const [activeTab, setActiveTab] = useState('general');

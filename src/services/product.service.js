@@ -16,7 +16,7 @@ import {
   startAfter,
   onSnapshot
 } from 'firebase/firestore';
-import { db } from '@/config/firebase';
+import { db } from '@/lib/firebase';
 
 // Collection reference
 const PRODUCTS_COLLECTION = 'products';

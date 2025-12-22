@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { Clock, CheckCircle, Star, TrendingUp } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { collection, query, where, getDocs } from 'firebase/firestore';
-import { db } from '@/config/firebase';
+import { db } from '@/lib/firebase';
 
 const PerformanceMetrics = () => {
   const { user } = useAuth();

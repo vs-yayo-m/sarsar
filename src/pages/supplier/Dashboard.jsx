@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import SupplierDashboard from '@/components/supplier/SupplierDashboard';
 import LoadingScreen from '@/components/shared/LoadingScreen';
 import { collection, query, where, onSnapshot, orderBy, limit } from 'firebase/firestore';
-import { db } from '@/config/firebase';
+import { db } from '@/lib/firebase';
 
 const SupplierDashboardPage = () => {
   const { user, userRole, loading: authLoading } = useAuth();
