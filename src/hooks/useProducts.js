@@ -80,7 +80,7 @@ export const useProducts = (filters = {}) => {
     filters.limit,
   ]);
   
-  return { products, loading, error };
+  return { products, loading, error ,fetchFeatured };
 };
 
 export default useProducts;
