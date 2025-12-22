@@ -1,7 +1,6 @@
-// FILE PATH: src/pages/Shop.jsx
+//FILE PATH: src/pages/Shop.jsx
 // Shop Page - Browse all products with filters and sorting
-
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { SlidersHorizontal, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -14,6 +13,8 @@ import Button from '@/components/ui/Button';
 const Shop = () => {
   const [searchParams] = useSearchParams();
   const [showFilters, setShowFilters] = useState(false);
+  
+  // Memoize initial state from URL to prevent unnecessary re-renders
   const [filters, setFilters] = useState({
     category: searchParams.get('category') || '',
     minPrice: 0,
@@ -22,39 +23,59 @@ const Shop = () => {
     inStock: true,
   });
   
-  const { products, loading, error, fetchProducts, fetchByCategory, searchProducts } = useProducts();
+  const { 
+    products = [], 
+    loading, 
+    error, 
+    fetchProducts, 
+    fetchByCategory, 
+    searchProducts 
+  } = useProducts();
   
-  // Initial fetch
-  useEffect(() => {
+  // Safe wrapper for fetching logic to prevent "is not a function" errors
+  const syncWithUrl = useCallback(() => {
     const category = searchParams.get('category');
     const search = searchParams.get('search');
     
-    if (search) {
+    // Defensive checks: ensure hook functions exist before calling (fixes "v is not a function")
+    if (search && typeof searchProducts === 'function') {
       searchProducts(search);
-    } else if (category) {
+    } else if (category && typeof fetchByCategory === 'function') {
       fetchByCategory(category);
       setFilters(prev => ({ ...prev, category }));
-    } else {
+    } else if (typeof fetchProducts === 'function') {
       fetchProducts(filters);
     }
+  }, [searchParams, filters, fetchProducts, fetchByCategory, searchProducts]);
+
+  // Initial fetch and URL sync
+  useEffect(() => {
+    syncWithUrl();
+    // We only want to trigger this when the URL parameters specifically change
   }, [searchParams]);
   
   // Handle filter change
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters);
-    fetchProducts(newFilters);
+    if (typeof fetchProducts === 'function') {
+      fetchProducts(newFilters);
+    }
   };
   
   // Handle sort change
   const handleSortChange = (sortBy) => {
     const newFilters = { ...filters, sortBy };
     setFilters(newFilters);
-    fetchProducts(newFilters);
+    if (typeof fetchProducts === 'function') {
+      fetchProducts(newFilters);
+    }
   };
   
   // Handle search
   const handleSearch = (term) => {
-    searchProducts(term);
+    if (typeof searchProducts === 'function') {
+      searchProducts(term);
+    }
   };
   
   // Clear filters
@@ -67,7 +88,9 @@ const Shop = () => {
       inStock: true,
     };
     setFilters(defaultFilters);
-    fetchProducts(defaultFilters);
+    if (typeof fetchProducts === 'function') {
+      fetchProducts(defaultFilters);
+    }
   };
   
   return (
@@ -115,37 +138,41 @@ const Shop = () => {
             <div className="flex items-center gap-2 mt-4 flex-wrap">
               <span className="text-sm text-gray-600">Active filters:</span>
               
-              {filters.category && (
-                <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  className="flex items-center gap-2 px-3 py-1.5 bg-orange-100 text-orange-700 rounded-full text-sm font-medium"
-                >
-                  {filters.category}
-                  <button
-                    onClick={() => handleFilterChange({ ...filters, category: '' })}
-                    className="hover:bg-orange-200 rounded-full p-0.5 transition-colors"
+              <AnimatePresence>
+                {filters.category && (
+                  <motion.div
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0, opacity: 0 }}
+                    className="flex items-center gap-2 px-3 py-1.5 bg-orange-100 text-orange-700 rounded-full text-sm font-medium"
                   >
-                    <X className="w-3 h-3" />
-                  </button>
-                </motion.div>
-              )}
+                    {filters.category}
+                    <button
+                      onClick={() => handleFilterChange({ ...filters, category: '' })}
+                      className="hover:bg-orange-200 rounded-full p-0.5 transition-colors"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  </motion.div>
+                )}
 
-              {(filters.minPrice > 0 || filters.maxPrice < 10000) && (
-                <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  className="flex items-center gap-2 px-3 py-1.5 bg-orange-100 text-orange-700 rounded-full text-sm font-medium"
-                >
-                  Rs. {filters.minPrice} - Rs. {filters.maxPrice}
-                  <button
-                    onClick={() => handleFilterChange({ ...filters, minPrice: 0, maxPrice: 10000 })}
-                    className="hover:bg-orange-200 rounded-full p-0.5 transition-colors"
+                {(filters.minPrice > 0 || filters.maxPrice < 10000) && (
+                  <motion.div
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0, opacity: 0 }}
+                    className="flex items-center gap-2 px-3 py-1.5 bg-orange-100 text-orange-700 rounded-full text-sm font-medium"
                   >
-                    <X className="w-3 h-3" />
-                  </button>
-                </motion.div>
-              )}
+                    Rs. {filters.minPrice} - Rs. {filters.maxPrice}
+                    <button
+                      onClick={() => handleFilterChange({ ...filters, minPrice: 0, maxPrice: 10000 })}
+                      className="hover:bg-orange-200 rounded-full p-0.5 transition-colors"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
               <button
                 onClick={handleClearFilters}
@@ -174,7 +201,7 @@ const Shop = () => {
           {/* Products Grid */}
           <main className="lg:col-span-3">
             {/* Results Count */}
-            {!loading && products.length > 0 && (
+            {!loading && products?.length > 0 && (
               <p className="text-sm text-gray-600 mb-6">
                 Showing <span className="font-semibold">{products.length}</span> products
               </p>
@@ -182,16 +209,16 @@ const Shop = () => {
 
             {/* Products */}
             <ProductGrid
-              products={products}
+              products={products || []}
               loading={loading}
               error={error}
             />
 
             {/* Load More */}
-            {!loading && products.length > 0 && (
+            {!loading && products?.length > 0 && (
               <div className="mt-12 text-center">
                 <Button
-                  onClick={() => {/* TODO: Load more */}}
+                  onClick={() => {/* TODO: Implement pagination in useProducts */}}
                   variant="secondary"
                   size="lg"
                 >
@@ -207,3 +234,4 @@ const Shop = () => {
 };
 
 export default Shop;
+
