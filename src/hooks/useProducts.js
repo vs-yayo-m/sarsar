@@ -1,86 +1,53 @@
 // FILE PATH: src/hooks/useProducts.js
-// Custom hook for fetching and managing products
 
-import { useState, useEffect } from 'react';
-import { collection, query, getDocs, where, orderBy, limit } from 'firebase/firestore';
+import { useState, useCallback } from 'react';
+import {
+  collection,
+  query,
+  getDocs,
+  where,
+  orderBy,
+  limit,
+} from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 
-export const useProducts = (filters = {}) => {
+export default function useProducts(filters = {}) {
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        
-        let q = collection(db, 'products');
-        
-        // Apply filters if provided
-        const constraints = [];
-        
-        if (filters.category) {
-          constraints.push(where('category', '==', filters.category));
-        }
-        
-        if (filters.supplierId) {
-          constraints.push(where('supplierId', '==', filters.supplierId));
-        }
-        
-        if (filters.featured) {
-          constraints.push(where('featured', '==', true));
-        }
-        
-        if (filters.active !== undefined) {
-          constraints.push(where('active', '==', filters.active));
-        }
-        
-        // Apply sorting
-        if (filters.sortBy) {
-          constraints.push(orderBy(filters.sortBy, filters.sortOrder || 'asc'));
-        }
-        
-        // Apply limit
-        if (filters.limit) {
-          constraints.push(limit(filters.limit));
-        }
-        
-        // Build query with constraints
-        if (constraints.length > 0) {
-          q = query(q, ...constraints);
-        }
-        
-        const snapshot = await getDocs(q);
-        const productsData = snapshot.docs.map((doc) => ({
+
+  // 🔹 Fetch featured products (USED BY Home.jsx)
+  const fetchFeatured = useCallback(async (count = 8) => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const q = query(
+        collection(db, 'products'),
+        where('featured', '==', true),
+        limit(count)
+      );
+
+      const snapshot = await getDocs(q);
+
+      setProducts(
+        snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
-        }));
-        
-        setProducts(productsData);
-        setError(null);
-      } catch (err) {
-        console.error('Error fetching products:', err);
-        setError(err.message);
-        setProducts([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-    
-    fetchProducts();
-  }, [
-    filters.category,
-    filters.supplierId,
-    filters.featured,
-    filters.active,
-    filters.sortBy,
-    filters.sortOrder,
-    filters.limit,
-  ]);
-  
-  return { products, loading, error ,fetchFeatured };
-};
+        }))
+      );
+    } catch (err) {
+      console.error('fetchFeatured error:', err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
-export default useProducts;
+  return {
+    products,
+    loading,
+    error,
+    fetchFeatured, // ✅ DEFINED + EXPORTED
+  };
+}
